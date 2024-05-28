@@ -15,7 +15,6 @@ export default function Home() {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("Type 'start' to begin. Try to keep responses under 2 sentences and use correct grammar. This is just a demo.");
-  
   {/* onClick function to send post request to server and generate conversations */}
   const onclick = () => {
     if (isLoading) {
@@ -32,29 +31,38 @@ export default function Home() {
     setInputText("");
     setIsLoading(true);
     setMessage("Loading...");
-    const apiUrl = process.env.REACT_APP_API_URL;
-    fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({inputText, isIntro}),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      if (isIntro) {
-        setIsIntro(false);
-        setContext([...context, data.context]);
-        setRelativeResponse([...relativeResponse, data.rel_response]);
-        setDocResponse([...docResponse, data.doc_response]);
-        setIsLoading(false);
-      }
-      setRelativeResponse([...relativeResponse, data.rel_response]);
-      setDocResponse([...docResponse, data.doc_response]);
-      setIsLoading(false);
-      setMessage("Type your response below.")
-    })
-  };
+
+    fetch("/api/getURL")
+      .then(response => response.json())
+      .then(data => {
+
+        // use the fetched API URL for the second fetch call
+        fetch(data.apiKey, { 
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ inputText, isIntro }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (isIntro) {
+            setIsIntro(false);
+            setContext([...context, data.context]);
+            setRelativeResponse([...relativeResponse, data.rel_response]);
+            setDocResponse([...docResponse, data.doc_response]);
+            setIsLoading(false);
+          } else {
+            setRelativeResponse([...relativeResponse, data.rel_response]);
+            setDocResponse([...docResponse, data.doc_response]);
+            setIsLoading(false);
+            setMessage("Type your response below.");
+          }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+      })
+      .catch(error => console.error('Error fetching API URL:', error));
+    };
   
   {/* Set input dynamically */}
   const handleResponseChange = (event) => {
