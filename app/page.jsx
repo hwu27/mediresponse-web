@@ -87,7 +87,7 @@ export default function Home() {
       <section>
         <main className="flex flex-col items-center">
           {/* Output text */}
-          <div className="bg-blue-50 h-screen-65 w-8/12 overflow-y-scroll shadow-xl rounded-b-none rounded-xl">
+          <div className="bg-blue-50 h-screen-65 md:w-8/12 w-11/12 overflow-y-scroll shadow-xl rounded-b-none rounded-xl">
             <div className="mt-5 ml-5 flex"><span className="text-2xl mr-2 text-red-500"><CiCircleAlert /></span>{message}</div>
             {/* Context  */}
             <p className="p-10 font-bold">
@@ -117,7 +117,7 @@ export default function Home() {
             <div className="bg-neutral-300 h-0.5 w-9/12"></div>  
           </div>
           {/* Input text */}
-          <div className="bg-blue-50 h-screen-15 w-8/12 flex justify-center items-center rounded-xl rounded-t-none">
+          <div className="bg-blue-50 h-screen-15 md:w-8/12 w-11/12 flex justify-center items-center rounded-xl rounded-t-none">
             <div className="flex justify-center items-center w-10/12 bg-white rounded-xl">
               <input className="text-2xl w-full h-full p-2 focus:border-transparent focus:outline-none" value={inputText} onChange={handleResponseChange} onKeyDown={handleKeyPress}></input> 
               <span className="flex text-4xl text-neutral-600 hover:text-neutral-200 cursor-pointer p-2" onClick={() => onclick(docResponse)}>
